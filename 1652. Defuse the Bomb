@@ -1,0 +1,90 @@
+Intuition
+The goal is to replace each element in the given code array with the sum of the k elements that come after it (if k > 0) or before it (if k < 0), considering the array wraps around. The intuition is to iterate through the code array and calculate the replacement value based on the specified rules.
+
+Approach
+The solution iterates through the code array, calling the ReplaceNum function for each element. In ReplaceNum, the replacement value is calculated by iterating k times in the specified direction (forward or backward), summing up the values encountered. The index is adjusted using the modulo operator for wrapping around the array.
+
+Complexity
+Time complexity: O(N^2)
+Space complexity: O(N)
+Code
+/*
+int Replacenum(vector<int> &code, int i, int k):
+    int index;
+    int value = 0;
+    if(k > 0 ){
+        index = i+1;
+        while(k--){
+            value += code[index];
+            if(index >= code.size()){
+                index = 0;
+            }else{
+                index++;
+            }
+        }
+        return value;
+    }
+    else{
+        index = i-1;
+        while(k--){
+            value += code[index];
+            if(index < 0){
+                index = code.size()-1;
+            }else{
+                index--;
+            }
+        }
+        return value;
+    }
+
+for(int i=0; i<code.size(); i++){
+    code[i] = ReplaceNum(code, i, k);
+}
+*/
+class Solution {
+public:
+
+int ReplaceNum(vector<int> &code, int i, int k){
+    int index;
+    int value = 0;
+    if(k > 0 ){
+        index = i+1;
+        while(k--){
+            value += code[index % code.size()];
+            index++;
+        }
+        return value;
+    }
+    else{
+        index = i-1;
+        if(index < 0 ){
+            index = code.size()-1;
+        }
+        value += code[index];
+        cout << index << " ";
+        int reps = abs(k)-1;
+        while(reps--){
+            cout << index << " ";
+            index--;
+            if(index < 0){
+                index = code.size()-1;
+            }
+            value += code[index];
+        }
+
+        return value;
+    };
+};
+    vector<int> decrypt(vector<int>& code, int k) {
+        vector<int> Output_arr(code.size(),0);
+        if(k == 0){
+            return Output_arr;
+        }
+        for(int i=0; i<code.size(); i++){
+            Output_arr[i] = ReplaceNum(code, i, k);
+        }   
+
+        return Output_arr;
+        
+    }
+};
