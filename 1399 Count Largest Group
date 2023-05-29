@@ -1,0 +1,55 @@
+Approach
+Get the frequency map of DigitSum vs the number of elements with the same DigitSum.
+Then get the largest size of group that there is.
+Then find out the count of groups with the same size as the largest size of group.
+
+Complexity
+Time complexity: O(N^2)
+Space complexity: O(N)
+Code
+/*
+Have a hashmap which will store sum vs the number of numbers having that sum
+{1: }
+{2 : }
+{3: }
+{4: }
+
+
+Step1: Get the SumXFreq
+*/
+#include <unordered_map>
+class Solution {
+public:
+    int GetDigitSum(int num){
+        string s = to_string(num);
+        int sum = 0;
+        for(char c : s){
+            sum += c - '0';
+        }
+        return sum;
+    };
+    int countLargestGroup(int n) {
+        unordered_map<int,int> SumXFreq;
+        for(int i=1; i<=n; i++){
+            int DigitSum = GetDigitSum(i);
+            SumXFreq[DigitSum] += 1;
+        }
+
+        // Get the maximum size group
+        int LargestGroupSize = 0; 
+        for(auto it = SumXFreq.begin(); it != SumXFreq.end(); ++it){
+            LargestGroupSize = max(LargestGroupSize, it->second);
+        }
+
+        // Find out how many pairs have size equal to maximum size group
+        int count = 0;
+        for(auto it = SumXFreq.begin(); it != SumXFreq.end(); ++it){
+            if(it->second == LargestGroupSize){
+                count++;
+            }
+        }
+
+        return count;
+
+    }
+};
